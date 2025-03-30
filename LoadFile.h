@@ -69,7 +69,6 @@ private:
 };
 
 FILE* file_string;
-extern size_t Users_num;
 extern std::vector<User> users;
 extern Logger log_manager;
 
@@ -113,6 +112,7 @@ void Load_Users()
     std::cout << "Loading User Information...\n";
 
     std::ifstream fin("user.txt");
+	size_t Users_num;
 
     if (!fin.is_open())
     {
@@ -156,13 +156,14 @@ void Load_Users()
 
         users.push_back(User(_name, _password, brw_book, book_brw_list, level));
     }
+
     std::cout << "Load Is Successful\n";
 }
 
 std::vector<Book_With_Person> Get_All_Borrowed_Book()
 {
 	std::vector<Book_With_Person> result;
-	for (int i = 0; i < Users_num; i++)
+	for (int i = 0; i < users.size(); i++)
 	{
 		std::vector<Book> tmp = users[i].Get_Borrowed_Book_List();
 		for (int j = 0; j < tmp.size(); j++)

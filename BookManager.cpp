@@ -4,7 +4,6 @@
 #include <io.h>
 #include <fcntl.h>
 
-
 enum Login_User_State
 {
 	Unlogined = -1,
@@ -21,7 +20,6 @@ std::vector<User> users;									 //用户列表
 User Logined_User;                                           //当前登录用户
 User Pre_Logined_User;                                       //预登录用户
 Login_User_State Current_State = Unlogined;                  //当前登录状态
-size_t Users_num;                                            //用户数量
 unsigned int num_of_list;                                    //当前用户在用户列表中的位置
 int max_borrowed;											 //最大借书数量
 Logger log_manager;                                          //日志记录器
@@ -33,9 +31,14 @@ int main()
 {
 	//初始化
 	
-	HICON hIcon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(101));
-	SendMessage(GetConsoleWindow(), WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
-	SendMessage(GetConsoleWindow(), WM_SETICON, ICON_BIG, (LPARAM)hIcon);
+	// 设置任务栏图标
+	HINSTANCE hInstance = GetModuleHandle(nullptr);
+	HICON hAppIcon = LoadIcon(hInstance, MAKEINTRESOURCE(101));
+
+	// 同时设置控制台窗口图标（可选）
+	HWND hConsole = GetConsoleWindow();
+	SendMessage(hConsole, WM_SETICON, ICON_SMALL, (LPARAM)hAppIcon);
+	SendMessage(hConsole, WM_SETICON, ICON_BIG, (LPARAM)hAppIcon);
 
 	//加载用户信息
 

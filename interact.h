@@ -87,6 +87,8 @@ void command_help(Login_User_State _state)
 		std::cout << "exit  --退出登录\n";
 		std::cout << "help  --查看帮助\n";
 		std::cout << "return  --还书\n";
+		std::cout << "adduser  --添加用户\n";
+		std::cout << "deluser  --删除用户\n";
 	}
 
 	std::cout << "\n";
@@ -198,7 +200,7 @@ void Interact(Login_User_State User_State, std::string commandP)
 					std::cout << "登陆成功!\n";
 					Current_State = Logined_User.Get_Level();
 					num_of_list = Find_num(name_tmp);
-					log_manager.log(Log_lev::USER_INFO, "User:" + name_tmp + "登陆成功");
+					log_manager.log(Log_lev::USER_INFO, "User：" + name_tmp + "登陆成功");
 				}
 				else
 				{
@@ -280,6 +282,11 @@ void Interact(Login_User_State User_State, std::string commandP)
 		{
 			std::cout << "\n当前借书情况:\n";
 			View_Current_User_Borrowed_Book(Logined_User);
+			if (Logined_User.Get_Borrowed_Book_List().size() == 0)
+			{
+				std::cout << "当前没有借书\n";
+				return;
+			}
 			std::cout << "\n请输入以序号还是书名归还 序号:x 书名:n\n请输入：";
 			std::string command_l;
 			std::cin >> command_l;
@@ -396,6 +403,38 @@ void Interact(Login_User_State User_State, std::string commandP)
 		else if (commandP == "help")
 		{
 			command_help(User(L_Administrator).Get_Level());
+		}
+		else if (commandP == "adduser")
+		{
+			std::string name;
+			std::string password;
+			std::cout << "请输入用户名:";
+			std::cin >> name;
+			std::cout << "请输入密码:";
+			std::cin >> password;
+			users.push_back(User(name, password, 0, {}, Local_user));
+			Rewrite_User_File(users);
+			std::cout << "添加用户成功\n";
+			log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "添加用户" + name + "成功");
+		}
+		else if (commandP == "deluser")
+		{
+			std::string name;
+			std::cout << "请输入要删除的用户名:";
+			std::cin >> name;
+			for (int i = 0; i < users.size(); i++)
+			{
+				if (users[i].Get_name() == name)
+				{
+					users.erase(users.begin() + i);
+					Rewrite_User_File(users);
+					std::cout << "删除用户成功\n";
+					log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "删除用户" + name + "成功");
+					return;
+				}
+			}
+			std::cerr << "未找到该用户\n";
+			log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "删除用户失败，原因：未找到该用户");
 		}
 		else
 		{

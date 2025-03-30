@@ -242,3 +242,48 @@
 2025-03-30 09:47:02 
 : 
 2025-03-30 09:47:02 [APP-INFO]      : 应用启动
+2025-03-30 09:53:32 
+: 
+2025-03-30 09:53:32 [APP-INFO]      : 应用启动
+2025-03-30 09:56:39 
+: 
+2025-03-30 09:56:39 [APP-INFO]      : 应用启动
+2025-03-30 10:01:29 
+: 
+2025-03-30 10:01:29 [APP-INFO]      : 应用启动
+2025-03-30 10:01:54 [USER-INFO]    : User:admin登陆成功
+2025-03-30 10:02:10 [APP-INFO]      : 文件重写成功
+2025-03-30 10:02:10 [USER-INFO]    : User：admin添加用户成功
+2025-03-30 10:02:17 [USER-INFO]    : User：admin退出成功
+2025-03-30 10:02:24 [USER-INFO]    : User:guanboyuan登陆成功
+2025-03-30 10:02:35 [USER-INFO]    : User：guanboyuan借书成功
+2025-03-30 10:02:35 [APP-INFO]      : 文件重写成功
+2025-03-30 10:02:44 [APP-INFO]      : 文件重写成功
+2025-03-30 10:02:44 [USER-INFO]    : User：guanboyuan还书成功
+2025-03-30 10:03:28 [USER-INFO]    : User：guanboyuan还书失败，原因：序号错误
+2025-03-30 10:05:15 [USER-INFO]    : User：guanboyuan退出成功
+2025-03-30 10:05:21 [USER-INFO]    : User:admin登陆成功
+2025-03-30 10:05:35 [APP-INFO]      : 文件重写成功
+2025-03-30 10:05:35 [USER-INFO]    : User：admin删除用户成功
+2025-03-30 10:05:40 [USER-INFO]    : User：admin退出成功
+2025-03-30 10:05:51 [USER-INFO]    : User：guanboyuan登录失败，原因：无该用户
+2025-03-30 10:05:57 [APP-INFO]      : 软件已退出
+2025-03-30 10:10:32 
+: 
+2025-03-30 10:10:32 [APP-INFO]      : 应用启动
+2025-03-30 10:10:37 [USER-INFO]    : User：admin登陆成功
+2025-03-30 10:11:02 [APP-INFO]      : 文件重写成功
+2025-03-30 10:11:02 [USER-INFO]    : User：admin添加用户guanboyuan成功
+2025-03-30 10:11:07 [USER-INFO]    : User：admin退出成功
+2025-03-30 10:11:53 [USER-INFO]    : User：guanboyuan登陆成功
+2025-03-30 10:12:04 [USER-INFO]    : User：guanboyuan借书成功
+2025-03-30 10:12:04 [APP-INFO]      : 文件重写成功
+2025-03-30 10:12:54 [USER-INFO]    : User：guanboyuan退出成功
+2025-03-30 10:13:06 [USER-INFO]    : User：admin登陆成功
+2025-03-30 10:13:25 [FILE-OUT]       : User：admin成功生成文件borrowed_book.html
+2025-03-30 10:19:45 
+: 
+2025-03-30 10:19:45 [APP-INFO]      : 应用启动
+2025-03-30 10:22:51 
+: 
+2025-03-30 10:22:51 [APP-INFO]      : 应用启动
