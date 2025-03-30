@@ -1,66 +1,6 @@
 #pragma once
-#include<conio.h>
 #define Log_lev Logger::Level
 
-std::string get_password(const char prompt[], bool show_asterisk = true) {
-	std::string password;
-	std::cout << prompt;
-
-#ifdef _WIN32
-	int ch;
-	while (true) {
-		ch = _getch();
-		// 处理扩展按键（如方向键）
-		if (ch == 0 || ch == 224) {
-			_getch();  // 忽略扩展按键的第二个字节
-			continue;
-		}
-		if (ch == '\r')  // 回车键结束输入
-			break;
-		if (ch == '\b') { // 处理退格键
-			if (!password.empty()) {
-				password.pop_back();
-				if (show_asterisk)
-					std::cout << "\b \b"; // 回退并擦除星号
-			}
-		}
-		else {
-			password.push_back(static_cast<char>(ch));
-			if (show_asterisk)
-				std::cout << '*';
-		}
-	}
-#else
-	struct termios oldt, newt;
-	tcgetattr(STDIN_FILENO, &oldt); // 保存当前终端设置
-	newt = oldt;
-	newt.c_lflag &= ~(ECHO | ICANON); // 禁用回显和规范模式
-	tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-
-	char ch;
-	while (read(STDIN_FILENO, &ch, 1) == 1 && ch != '\n') {
-		if (ch == 127 || ch == '\b') { // 处理退格
-			if (!password.empty()) {
-				password.pop_back();
-				if (show_asterisk) {
-					std::cout << "\b \b";
-					std::cout.flush();
-				}
-			}
-		}
-		else {
-			password.push_back(ch);
-			if (show_asterisk) {
-				std::cout << '*';
-				std::cout.flush();
-			}
-		}
-	}
-	tcsetattr(STDIN_FILENO, TCSANOW, &oldt); // 恢复终端设置
-#endif
-	std::cout << std::endl;
-	return password;
-}
 
 void command_help(Login_User_State _state)
 {
@@ -79,6 +19,7 @@ void command_help(Login_User_State _state)
 		std::cout << "return  --还书\n";
 		std::cout << "view  --查看借书情况\n";
 		std::cout << "help  --查看帮助\n";
+		std::cout << "change_password  --修改密码\n";
 	}
 	else if (_state == L_Administrator)
 	{
@@ -89,6 +30,9 @@ void command_help(Login_User_State _state)
 		std::cout << "return  --还书\n";
 		std::cout << "adduser  --添加用户\n";
 		std::cout << "deluser  --删除用户\n";
+		std::cout << "change_password  --修改密码\n";
+		std::cout << "change_max_borrowed  --修改最大借书数量\n";
+		std::cout << "change_color  --修改颜色\n";
 	}
 
 	std::cout << "\n";
@@ -265,7 +209,7 @@ void Interact(Login_User_State User_State, std::string commandP)
 			if (Logined_User.Get_Borrowed_Book_List().size() >= max_borrowed)
 			{
 				std::cerr << "你已经借了" << max_borrowed << "本书，无法再借\n";
-				log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "借书失败，原因：借书数量已达上限");
+				log_manager.log(Log_lev::BORROW, "User：" + Logined_User.Get_name() + "借书失败，原因：借书数量已达上限");
 			}
 			else
 			{
@@ -273,7 +217,7 @@ void Interact(Login_User_State User_State, std::string commandP)
 				std::cout << "借书成功\n";
 				Logined_User.Borrow_Book(book_name);
 				users[num_of_list] = Logined_User;
-				log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "借书成功");
+				log_manager.log(Log_lev::BORROW, "User：" + Logined_User.Get_name() + "借书成功");
 				Rewrite_User_File(users);
 
 			}
@@ -299,7 +243,7 @@ void Interact(Login_User_State User_State, std::string commandP)
 				if (num >= Logined_User.Get_Borrowed_Book_List().size())
 				{
 					std::cerr << "请输入正确的序号\n";
-					log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "还书失败，原因：序号错误");
+					log_manager.log(Log_lev::RETURN, "User：" + Logined_User.Get_name() + "还书失败，原因：序号错误");
 				}
 				else
 				{
@@ -307,7 +251,7 @@ void Interact(Login_User_State User_State, std::string commandP)
 					users[num_of_list] = Logined_User;
 					Rewrite_User_File(users);
 					std::cout << "还书成功\n";
-					log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "还书成功");
+					log_manager.log(Log_lev::RETURN, "User：" + Logined_User.Get_name() + "还书成功");
 				}
 			}
 			else if (command_l == "n")
@@ -320,12 +264,12 @@ void Interact(Login_User_State User_State, std::string commandP)
 					users[num_of_list] = Logined_User;
 					Rewrite_User_File(users);
 					std::cout << "还书成功\n";
-					log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "还书成功");
+					log_manager.log(Log_lev::RETURN, "User：" + Logined_User.Get_name() + "还书成功");
 				}
 				else
 				{
 					std::cerr << "未找到该书\n";
-					log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "还书失败，原因：未找到该书");
+					log_manager.log(Log_lev::RETURN, "User：" + Logined_User.Get_name() + "还书失败，原因：未找到该书");
 				}
 			}
 			else
@@ -336,6 +280,29 @@ void Interact(Login_User_State User_State, std::string commandP)
 		else if(commandP=="view")
 		{
 			View_Current_User_Borrowed_Book(Logined_User);
+		}
+		else if (commandP == "change_password")
+		{
+			std::string old_password;
+			old_password = get_password("请输入原密码:", true);
+			int flag = Logined_User.Change_Password(old_password);
+			if (flag == 0)
+			{
+				std::cout << "修改成功\n";
+				users[num_of_list] = Logined_User;
+				Rewrite_User_File(users);
+				log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "修改密码成功");
+			}
+			else if (flag == 1)
+			{
+				std::cerr << "两次输入密码不一致\n";
+				log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "修改密码失败，原因：两次输入密码不一致");
+			}
+			else
+			{
+				std::cerr << "原密码错误\n";
+				log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "修改密码失败，原因：原密码错误");
+			}
 		}
 		else
 		{
@@ -348,7 +315,7 @@ void Interact(Login_User_State User_State, std::string commandP)
 		if (commandP == "view")
 		{
 			std::string comd;
-			std::cout << "请输入在文件中还是控制台 文件：file 控制台:com\n请输入：";
+			std::cout << "请输入在文件中还是控制台 文件：file 控制台:con\n请输入：";
 			std::cin >> comd;
 			if (comd == "file")
 			{
@@ -383,9 +350,30 @@ void Interact(Login_User_State User_State, std::string commandP)
 			Logined_User.Borrow_Book(book_name);
 			users[num_of_list] = Logined_User;
 			Rewrite_User_File(users);
-			log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "借书成功");
-
-			
+			log_manager.log(Log_lev::BORROW, "User：" + Logined_User.Get_name() + "借书成功");
+		}
+		else if (commandP == "change_password")
+		{
+			std::string old_password;
+			old_password = get_password("请输入原密码:", true);
+			int flag = Logined_User.Change_Password(old_password);
+			if (flag == 0)
+			{
+				std::cout << "修改成功\n";
+				users[num_of_list] = Logined_User;
+				Rewrite_User_File(users);
+				log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "修改密码成功");
+			}
+			else if (flag == 1)
+			{
+				std::cerr << "两次输入密码不一致\n";
+				log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "修改密码失败，原因：两次输入密码不一致");
+			}
+			else
+			{
+				std::cerr << "原密码错误\n";
+				log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "修改密码失败，原因：原密码错误");
+			}
 		}
 		else if (commandP == "login")
 		{
@@ -393,11 +381,58 @@ void Interact(Login_User_State User_State, std::string commandP)
 		}
 		else if (commandP == "return")
 		{
-			std::string book_name;
-			std::cout << "请输入要还的书名:";
-			std::cin >> book_name;
-			Logined_User.Return_Book(book_name);
-			users[num_of_list] = Logined_User;
+			std::cout << "\n当前借书情况:\n";
+			View_Current_User_Borrowed_Book(Logined_User);
+			if (Logined_User.Get_Borrowed_Book_List().size() == 0)
+			{
+				std::cout << "当前没有借书\n";
+				return;
+			}
+			std::cout << "\n请输入以序号还是书名归还 序号:x 书名:n\n请输入：";
+			std::string command_l;
+			std::cin >> command_l;
+			if (command_l == "x")
+			{
+				int num;
+				std::cout << "请输入序号:";
+				std::cin >> num;
+				num--;
+				if (num >= Logined_User.Get_Borrowed_Book_List().size())
+				{
+					std::cerr << "请输入正确的序号\n";
+					log_manager.log(Log_lev::RETURN, "User：" + Logined_User.Get_name() + "还书失败，原因：序号错误");
+				}
+				else
+				{
+					Logined_User.Return_Book(num);
+					users[num_of_list] = Logined_User;
+					Rewrite_User_File(users);
+					std::cout << "还书成功\n";
+					log_manager.log(Log_lev::RETURN, "User：" + Logined_User.Get_name() + "还书成功");
+				}
+			}
+			else if (command_l == "n")
+			{
+				std::string book_name;
+				std::cout << "请输入要还的书名:";
+				std::cin >> book_name;
+				if (Logined_User.Return_Book(book_name))
+				{
+					users[num_of_list] = Logined_User;
+					Rewrite_User_File(users);
+					std::cout << "还书成功\n";
+					log_manager.log(Log_lev::RETURN, "User：" + Logined_User.Get_name() + "还书成功");
+				}
+				else
+				{
+					std::cerr << "未找到该书\n";
+					log_manager.log(Log_lev::RETURN, "User：" + Logined_User.Get_name() + "还书失败，原因：未找到该书");
+				}
+			}
+			else
+			{
+				std::cerr << "请输入正确的指令\n";
+			}
 			Rewrite_User_File(users);
 		}
 		else if (commandP == "help")
@@ -436,6 +471,24 @@ void Interact(Login_User_State User_State, std::string commandP)
 			std::cerr << "未找到该用户\n";
 			log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "删除用户失败，原因：未找到该用户");
 		}
+		else if (commandP == "change_max_borrowed")
+		{
+			std::cout << "请输入新的最大借书数量:";
+			std::cin >> max_borrowed;
+			std::cout << "修改成功\n";
+			Rewrite_Setting_File(max_borrowed, color);
+			log_manager.log(Log_lev::APP_INFO, "User：" + Logined_User.Get_name() + "修改最大借书数量成功");
+		}
+		else if (commandP == "change_color")
+		{
+			std::string color;
+			std::cout << "请输入新的颜色:";
+			std::cin >> color;
+			system(("color " + color).c_str());
+			std::cout << "修改成功\n";
+			Rewrite_Setting_File(max_borrowed, color);
+			log_manager.log(Log_lev::APP_INFO, "User：" + Logined_User.Get_name() + "修改颜色成功");
+			}
 		else
 		{
 			std::cout << "请输入正确的指令\n";

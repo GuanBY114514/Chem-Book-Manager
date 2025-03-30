@@ -58,8 +58,8 @@ private:
         case Level::USER_INFO:    return "[USER-INFO]    ";
         case Level::WARNING:      return "[WARNING]        ";
         case Level::L_ERROR:      return "[ERROR]          ";
-        case Level::BORROW:       return "[BORROW]          ";
-        case Level::RETURN:       return "[RETURN]          ";
+        case Level::BORROW:       return "[BORROW]        ";
+        case Level::RETURN:       return "[RETURN]        ";
         case Level::APP_INFO:     return "[APP-INFO]      ";
         case Level::FILE_OUT:     return "[FILE-OUT]       ";
         default:                  return "[UNKNOWN]        ";
@@ -87,7 +87,7 @@ std::string get_current_path_win() {
     return (pos != std::string::npos) ? path.substr(0, pos) : "";
 }
 
-void Load_Setting(int& s) {  // 修改为引用参数
+void Load_Setting(int& s, std::string& _color) {  // 修改为引用参数
     std::cout << "Loading Settings...\n";
     std::ifstream fin("settings.txt");
     if (!fin.is_open()) {
@@ -97,13 +97,22 @@ void Load_Setting(int& s) {  // 修改为引用参数
     }
 
     int tmp;
+	std::string color;
     if (!(fin >> tmp)) {
         std::cerr << "Error: Failed to read integer from file\n";
         log_manager.log(Logger::Level::L_ERROR, "无法读取数据");
         return;
     }
 
+	if (!(fin >> color))
+	{
+		std::cerr << "Error: Failed to read color from file\n";
+		log_manager.log(Logger::Level::L_ERROR, "无法读取颜色");
+		return;
+	}
+
     s = tmp;  // 现在能正确修改外部变量
+	_color = color;
     std::cout << "Settings loaded successfully\n";
 }
 
@@ -252,5 +261,18 @@ void Rewrite_User_File(std::vector<User> _users)
 			fout << 1 << std::endl;
 		}
 	}
+	log_manager.log(Logger::Level::APP_INFO, "文件重写成功");
+}
+
+void Rewrite_Setting_File(int s,std::string _color)
+{
+	std::ofstream fout("settings.txt");
+	if (!fout.is_open())
+	{
+		std::cerr << "无法打开文件\n";
+		log_manager.log(Logger::Level::L_ERROR, "无法打开文件");
+		return;
+	}
+    fout << s << " " << _color << std::endl;
 	log_manager.log(Logger::Level::APP_INFO, "文件重写成功");
 }

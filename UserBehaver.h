@@ -1,5 +1,6 @@
 #pragma once
 #include "stdc++.h"
+#include <conio.h>
 
 struct Book
 {
@@ -20,6 +21,66 @@ struct Book_With_Person
 		this->person = person;
 	}
 };
+
+std::string get_password(const char prompt[], bool show_asterisk = true) {
+	std::string password;
+	std::cout << prompt;
+
+#ifdef _WIN32
+	int ch;
+	while (true) {
+		ch = _getch();
+		// 处理扩展按键（如方向键）
+		if (ch == 0 || ch == 224) {
+			_getch();  // 忽略扩展按键的第二个字节
+			continue;
+		}
+		if (ch == '\r')  // 回车键结束输入
+			break;
+		if (ch == '\b') { // 处理退格键
+			if (!password.empty()) {
+				password.pop_back();
+				if (show_asterisk)
+					std::cout << "\b \b"; // 回退并擦除星号
+			}
+		}
+		else {
+			password.push_back(static_cast<char>(ch));
+			if (show_asterisk)
+				std::cout << '*';
+		}
+	}
+#else
+	struct termios oldt, newt;
+	tcgetattr(STDIN_FILENO, &oldt); // 保存当前终端设置
+	newt = oldt;
+	newt.c_lflag &= ~(ECHO | ICANON); // 禁用回显和规范模式
+	tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+
+	char ch;
+	while (read(STDIN_FILENO, &ch, 1) == 1 && ch != '\n') {
+		if (ch == 127 || ch == '\b') { // 处理退格
+			if (!password.empty()) {
+				password.pop_back();
+				if (show_asterisk) {
+					std::cout << "\b \b";
+					std::cout.flush();
+				}
+			}
+		}
+		else {
+			password.push_back(ch);
+			if (show_asterisk) {
+				std::cout << '*';
+				std::cout.flush();
+			}
+		}
+	}
+	tcsetattr(STDIN_FILENO, TCSANOW, &oldt); // 恢复终端设置
+#endif
+	std::cout << std::endl;
+	return password;
+}
 
 extern std::string time_to_str(time_t t);
 extern std::string generate_book_table(const std::vector<Book_With_Person>& books);
@@ -116,15 +177,25 @@ public:
 		return false;
 	}
 
-	void Change_Password(std::string _in_old_password) const
+	int Change_Password(std::string _in_old_password)
 	{
 		if (_in_old_password == this->password)
 		{
 			std::string _new_password_first;//首次输入新密码
-			std::string _new_password_second;//
+			std::string _new_password_second;//第二次输入新密码
+			_new_password_first = get_password("请输入新密码:", true);
+			_new_password_second = get_password("请再次输入新密码:", true);
+			if (_new_password_first == _new_password_second)
+			{
+				this->password = _new_password_first;
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
 		}
-		std::cerr << "原密码错误！\n";
-		return;
+		return -1;
 	}
 
 	std::vector<Book> Get_Borrowed_Book_List() const

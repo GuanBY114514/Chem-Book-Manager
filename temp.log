@@ -287,3 +287,144 @@
 2025-03-30 10:22:51 
 : 
 2025-03-30 10:22:51 [APP-INFO]      : 应用启动
+2025-03-30 10:27:20 
+: 
+2025-03-30 10:27:20 [APP-INFO]      : 应用启动
+2025-03-30 10:27:46 
+: 
+2025-03-30 10:27:46 [APP-INFO]      : 应用启动
+2025-03-30 10:36:24 
+: 
+2025-03-30 10:36:24 [APP-INFO]      : 应用启动
+2025-03-30 10:36:33 [USER-INFO]    : User：guanboyuan登陆成功
+2025-03-30 10:36:54 [APP-INFO]      : 文件重写成功
+2025-03-30 10:36:54 [USER-INFO]    : User：guanboyuan还书成功
+2025-03-30 10:37:03 [USER-INFO]    : User：guanboyuan退出成功
+2025-03-30 10:37:16 [USER-INFO]    : User：guanboyuan登陆成功
+2025-03-30 10:37:25 [USER-INFO]    : User：guanboyuan借书成功
+2025-03-30 10:37:25 [APP-INFO]      : 文件重写成功
+2025-03-30 10:37:30 [USER-INFO]    : User：guanboyuan退出成功
+2025-03-30 10:37:40 [USER-INFO]    : User：admin登陆成功
+2025-03-30 10:38:19 [FILE-OUT]       : User：admin成功生成文件borrowed_book.html
+2025-03-30 10:42:01 
+: 
+2025-03-30 10:42:01 [APP-INFO]      : 应用启动
+2025-03-30 10:43:15 [USER-INFO]    : User：admin登陆成功
+2025-03-30 10:43:58 [APP-INFO]      : 文件重写成功
+2025-03-30 10:43:58 [BORROW]          : User：admin借书成功
+2025-03-30 10:44:25 [APP-INFO]      : 文件重写成功
+2025-03-30 10:44:25 [BORROW]          : User：admin借书成功
+2025-03-30 10:44:54 [APP-INFO]      : 文件重写成功
+2025-03-30 10:44:54 [BORROW]          : User：admin借书成功
+2025-03-30 10:45:31 [USER-INFO]    : User：admin退出成功
+2025-03-30 10:45:57 [USER-INFO]    : User：guanboyuan登录失败，原因：密码错误
+2025-03-30 10:52:04 [USER-INFO]    : User：guanboyuan登陆成功
+2025-03-30 10:52:18 [BORROW]          : User：guanboyuan借书成功
+2025-03-30 10:52:18 [APP-INFO]      : 文件重写成功
+2025-03-30 10:53:26 [BORROW]          : User：guanboyuan借书失败，原因：借书数量已达上限
+2025-03-30 10:57:21 [APP-INFO]      : 文件重写成功
+2025-03-30 10:57:21 [RETURN]          : User：guanboyuan还书成功
+2025-03-30 10:58:04 [BORROW]          : User：guanboyuan借书成功
+2025-03-30 10:58:04 [APP-INFO]      : 文件重写成功
+2025-03-30 10:58:23 [BORROW]          : User：guanboyuan借书失败，原因：借书数量已达上限
+2025-03-30 10:59:18 [APP-INFO]      : 文件重写成功
+2025-03-30 10:59:18 [RETURN]          : User：guanboyuan还书成功
+2025-03-30 10:59:26 [RETURN]          : User：guanboyuan还书失败，原因：序号错误
+2025-03-30 10:59:55 [APP-INFO]      : 文件重写成功
+2025-03-30 10:59:55 [RETURN]          : User：guanboyuan还书成功
+2025-03-30 11:00:15 [USER-INFO]    : User：guanboyuan退出成功
+2025-03-30 11:03:59 [APP-INFO]      : 软件已退出
+2025-03-30 11:11:34 
+: 
+2025-03-30 11:11:34 [APP-INFO]      : 应用启动
+2025-03-30 11:11:55 
+: 
+2025-03-30 11:11:55 [APP-INFO]      : 应用启动
+2025-03-30 11:12:45 
+: 
+2025-03-30 11:12:45 [APP-INFO]      : 应用启动
+2025-03-30 11:12:49 [USER-INFO]    : User：admin登陆成功
+2025-03-30 11:13:28 [APP-INFO]      : 文件重写成功
+2025-03-30 11:13:28 [USER-INFO]    : User：admin修改密码成功
+2025-03-30 11:13:31 [USER-INFO]    : User：admin退出成功
+2025-03-30 11:13:36 [USER-INFO]    : User：admin登陆成功
+2025-03-30 11:19:24 
+: 
+2025-03-30 11:19:24 [APP-INFO]      : 应用启动
+2025-03-30 11:19:29 [USER-INFO]    : User：admin登陆成功
+2025-03-30 11:22:10 
+: 
+2025-03-30 11:22:10 [APP-INFO]      : 应用启动
+2025-03-30 11:22:15 [USER-INFO]    : User：admin登陆成功
+2025-03-30 11:22:28 [APP-INFO]      : 文件重写成功
+2025-03-30 11:22:28 [USER-INFO]    : User：admin修改密码成功
+2025-03-30 11:23:10 
+: 
+2025-03-30 11:23:10 [APP-INFO]      : 应用启动
+2025-03-30 11:23:18 [USER-INFO]    : User：admin登录失败，原因：密码错误
+2025-03-30 11:23:28 [USER-INFO]    : User：admin登陆成功
+2025-03-30 11:23:36 [APP-INFO]      : 文件重写成功
+2025-03-30 11:23:36 [USER-INFO]    : User：admin修改密码成功
+2025-03-30 11:23:41 [FILE-OUT]       : User：admin成功生成文件borrowed_book.html
+2025-03-30 11:28:05 
+: 
+2025-03-30 11:28:05 [APP-INFO]      : 应用启动
+2025-03-30 11:28:26 [APP-INFO]      : 软件已退出
+2025-03-30 11:28:40 
+: 
+2025-03-30 11:28:40 [APP-INFO]      : 应用启动
+2025-03-30 11:28:57 [USER-INFO]    : User：asdf登陆成功
+2025-03-30 11:29:20 [BORROW]        : User：asdf借书成功
+2025-03-30 11:29:20 [APP-INFO]      : 文件重写成功
+2025-03-30 11:29:37 [APP-INFO]      : 文件重写成功
+2025-03-30 11:29:37 [RETURN]        : User：asdf还书成功
+2025-03-30 11:29:59 [APP-INFO]      : 文件重写成功
+2025-03-30 11:29:59 [USER-INFO]    : User：asdf修改密码成功
+2025-03-30 11:30:04 [USER-INFO]    : User：asdf退出成功
+2025-03-30 11:30:11 [USER-INFO]    : User：asdf登录失败，原因：密码错误
+2025-03-30 11:30:16 [USER-INFO]    : User：asdf登陆成功
+2025-03-30 11:30:26 [USER-INFO]    : User：asdf退出成功
+2025-03-30 11:30:33 [USER-INFO]    : User：admin登陆成功
+2025-03-30 11:31:04 [FILE-OUT]       : User：admin成功生成文件borrowed_book.html
+2025-03-30 11:31:29 [APP-INFO]      : 文件重写成功
+2025-03-30 11:31:29 [BORROW]        : User：admin借书成功
+2025-03-30 11:31:44 [APP-INFO]      : 文件重写成功
+2025-03-30 11:31:44 [RETURN]        : User：admin还书成功
+2025-03-30 11:31:44 [APP-INFO]      : 文件重写成功
+2025-03-30 11:31:59 [APP-INFO]      : 文件重写成功
+2025-03-30 11:31:59 [USER-INFO]    : User：admin添加用户plant成功
+2025-03-30 11:32:03 [USER-INFO]    : User：admin退出成功
+2025-03-30 11:32:10 [USER-INFO]    : User：plant登陆成功
+2025-03-30 11:32:16 [BORROW]        : User：plant借书成功
+2025-03-30 11:32:16 [APP-INFO]      : 文件重写成功
+2025-03-30 11:32:18 [USER-INFO]    : User：plant退出成功
+2025-03-30 11:32:24 [USER-INFO]    : User：admin登陆成功
+2025-03-30 11:32:30 [FILE-OUT]       : User：admin成功生成文件borrowed_book.html
+2025-03-30 11:32:43 [APP-INFO]      : 文件重写成功
+2025-03-30 11:32:43 [USER-INFO]    : User：admin删除用户plant成功
+2025-03-30 11:32:47 [FILE-OUT]       : User：admin成功生成文件borrowed_book.html
+2025-03-30 11:32:58 [USER-INFO]    : User：admin退出成功
+2025-03-30 11:33:11 
+: 
+2025-03-30 11:33:11 [APP-INFO]      : 应用启动
+2025-03-30 11:34:16 
+: 
+2025-03-30 11:34:16 [APP-INFO]      : 应用启动
+2025-03-30 11:34:22 [USER-INFO]    : User：asdf登陆成功
+2025-03-30 11:34:27 [BORROW]        : User：asdf借书成功
+2025-03-30 11:34:27 [APP-INFO]      : 文件重写成功
+2025-03-30 11:34:33 [BORROW]        : User：asdf借书失败，原因：借书数量已达上限
+2025-03-30 11:45:06 
+: 
+2025-03-30 11:45:06 [APP-INFO]      : 应用启动
+2025-03-30 11:45:25 [USER-INFO]    : User：admin登陆成功
+2025-03-30 11:45:38 [APP-INFO]      : 文件重写成功
+2025-03-30 11:45:38 [APP-INFO]      : User：admin修改颜色成功
+2025-03-30 11:45:45 [APP-INFO]      : 文件重写成功
+2025-03-30 11:45:45 [APP-INFO]      : User：admin修改颜色成功
+2025-03-30 11:46:23 
+: 
+2025-03-30 11:46:23 [APP-INFO]      : 应用启动
+2025-03-30 11:47:13 
+: 
+2025-03-30 11:47:13 [APP-INFO]      : 应用启动

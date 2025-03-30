@@ -23,6 +23,7 @@ Login_User_State Current_State = Unlogined;                  //当前登录状�
 unsigned int num_of_list;                                    //当前用户在用户列表中的位置
 int max_borrowed;											 //最大借书数量
 Logger log_manager;                                          //日志记录器
+std::string color;										     //当前颜色
 bool is_exit = false;                                        //是否退出
 
 #include "interact.h"
@@ -42,9 +43,9 @@ int main()
 
 	//加载用户信息
 
-	Load_Setting(max_borrowed);
+	Load_Setting(max_borrowed, color);
 	Load_Users();
-	system("color f1");
+    system(("color " + color).c_str());
 	std::wcout << "\n\n**************************\n";
 	std::wcout << "*欢迎使用化竞图书管理系统*\n";
 	std::wcout << "**************************\n\n\n操作台:\n";
