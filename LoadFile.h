@@ -5,10 +5,11 @@
 #include <chrono>
 #include <iomanip>
 #include <mutex>
+#include "UserBehaver.h"
 
 class Logger {
 public:
-    enum class Level { USER_INFO, WARNING, L_ERROR, BORROW, RETURN, APP_INFO, FILE_OUT };
+    enum class Level { USER_INFO, WARNING, L_ERROR, BORROW, RETURN, APP_INFO, FILE_OUT, ENDL };
 
     // 构造函数（默认日志文件为当前目录的temp.log）
     explicit Logger(const std::string& filename = "temp.log")
@@ -56,12 +57,13 @@ private:
         switch (level) {
         case Level::USER_INFO:    return "[USER-INFO]    ";
         case Level::WARNING:      return "[WARNING]        ";
-        case Level::L_ERROR:        return "[ERROR]          ";
+        case Level::L_ERROR:      return "[ERROR]          ";
         case Level::BORROW:       return "[BORROW]          ";
         case Level::RETURN:       return "[RETURN]          ";
         case Level::APP_INFO:     return "[APP-INFO]      ";
         case Level::FILE_OUT:     return "[FILE-OUT]       ";
         default:                  return "[UNKNOWN]        ";
+		case Level::ENDL:         return "\n";
         }
     }
 };
@@ -249,6 +251,5 @@ void Rewrite_User_File(std::vector<User> _users)
 			fout << 1 << std::endl;
 		}
 	}
-	std::cout << "文件重写成功\n";
 	log_manager.log(Logger::Level::APP_INFO, "文件重写成功");
 }

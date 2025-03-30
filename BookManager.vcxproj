@@ -136,7 +136,14 @@
   <ItemGroup>
     <ClInclude Include="interact.h" />
     <ClInclude Include="LoadFile.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="UserBehaver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BookManager.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon\favicon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

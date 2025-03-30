@@ -67,15 +67,26 @@ void command_help(Login_User_State _state)
 	std::cout << "\n当前可用命令:\n";
 	if (_state == Unlogined)
 	{
-		std::cout << "help  --获取帮助\nexitpra   --退出软件\nlogin   --登录用户\n";
+		std::cout << "login  --登录\n";
+		std::cout << "exitpra  --退出程序\n";
+		std::cout << "about  --关于应用程序\n";
+		std::cout << "help  --查看帮助\n";
 	}
 	else if (_state == Local_user)
 	{
 		std::cout << "borrow   --借书\n";
+		std::cout << "exit  --退出登录\n";
+		std::cout << "return  --还书\n";
+		std::cout << "view  --查看借书情况\n";
+		std::cout << "help  --查看帮助\n";
 	}
 	else if (_state == L_Administrator)
 	{
 		std::cout << "view  --查看所有借书情况\n";
+		std::cout << "borrow  --借书\n";
+		std::cout << "exit  --退出登录\n";
+		std::cout << "help  --查看帮助\n";
+		std::cout << "return  --还书\n";
 	}
 
 	std::cout << "\n";
@@ -147,6 +158,21 @@ int Find_num(std::string _name)
 
 extern int max_borrowed;
 
+void View_Current_User_Borrowed_Book(User _current_user)
+{
+	std::vector<Book> tmp = _current_user.Get_Borrowed_Book_List();
+	std::cout << "当前用户" << _current_user.Get_name() << "借书情况:\n";
+	if (tmp.size() == 0)
+	{
+		std::cout << "当前用户没有借书\n";
+		return;
+	}
+	for (int i = 0; i < tmp.size(); i++)
+	{
+		std::cout << i + 1 << " " << tmp[i].name << " " << time_to_str(tmp[i].borrowed_book_time) << std::endl;
+	}
+}
+
 void Interact(Login_User_State User_State, std::string commandP)
 {
 	std::cout << "\n";
@@ -186,6 +212,24 @@ void Interact(Login_User_State User_State, std::string commandP)
 				std::cout << "无该用户，请检查输入\n";
 				log_manager.log(Log_lev::USER_INFO, "User：" + name_tmp + "登录失败，原因：无该用户");
 			}
+		}
+		else if (commandP == "help")
+		{
+			command_help(User(Unlogined).Get_Level());
+		}
+		else if (commandP == "exitpra")
+		{
+			std::cout << "软件退出成功\n";
+			log_manager.log(Log_lev::APP_INFO, "软件已退出");
+			Logined_user = "";
+			Current_State = Unlogined;
+			Logined_User = User();
+			is_exit = true;
+			return;
+		}
+		else if (commandP == "about")
+		{
+			MessageBoxW(NULL, TEXT("化竞图书管理系统\n版本：v1.0\n作者：2401 GuanBY"), TEXT("关于"), MB_OK);
 		}
 		else
 		{
@@ -228,8 +272,63 @@ void Interact(Login_User_State User_State, std::string commandP)
 				Logined_User.Borrow_Book(book_name);
 				users[num_of_list] = Logined_User;
 				log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "借书成功");
+				Rewrite_User_File(users);
 
 			}
+		}
+		else if (commandP == "return")
+		{
+			std::cout << "\n当前借书情况:\n";
+			View_Current_User_Borrowed_Book(Logined_User);
+			std::cout << "\n请输入以序号还是书名归还 序号:x 书名:n\n请输入：";
+			std::string command_l;
+			std::cin >> command_l;
+			if (command_l == "x")
+			{
+				int num;
+				std::cout << "请输入序号:";
+				std::cin >> num;
+				num--;
+				if (num >= Logined_User.Get_Borrowed_Book_List().size())
+				{
+					std::cerr << "请输入正确的序号\n";
+					log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "还书失败，原因：序号错误");
+				}
+				else
+				{
+					Logined_User.Return_Book(num);
+					users[num_of_list] = Logined_User;
+					Rewrite_User_File(users);
+					std::cout << "还书成功\n";
+					log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "还书成功");
+				}
+			}
+			else if (command_l == "n")
+			{
+				std::string book_name;
+				std::cout << "请输入要还的书名:";
+				std::cin >> book_name;
+				if (Logined_User.Return_Book(book_name))
+				{
+					users[num_of_list] = Logined_User;
+					Rewrite_User_File(users);
+					std::cout << "还书成功\n";
+					log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "还书成功");
+				}
+				else
+				{
+					std::cerr << "未找到该书\n";
+					log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "还书失败，原因：未找到该书");
+				}
+			}
+			else
+			{
+				std::cerr << "请输入正确的指令\n";
+			}
+		}
+		else if(commandP=="view")
+		{
+			View_Current_User_Borrowed_Book(Logined_User);
 		}
 		else
 		{
@@ -268,9 +367,31 @@ void Interact(Login_User_State User_State, std::string commandP)
 			Logined_user = "";
 			Current_State = Unlogined;
 		}
+		else if (commandP == "borrow")
+		{
+			std::string book_name;
+			std::cout << "请输入要借的书名:";
+			std::cin >> book_name;
+			std::cout << "借书成功\n";
+			Logined_User.Borrow_Book(book_name);
+			users[num_of_list] = Logined_User;
+			Rewrite_User_File(users);
+			log_manager.log(Log_lev::USER_INFO, "User：" + Logined_User.Get_name() + "借书成功");
+
+			
+		}
 		else if (commandP == "login")
 		{
 			std::cout << "你已经登录了\n";
+		}
+		else if (commandP == "return")
+		{
+			std::string book_name;
+			std::cout << "请输入要还的书名:";
+			std::cin >> book_name;
+			Logined_User.Return_Book(book_name);
+			users[num_of_list] = Logined_User;
+			Rewrite_User_File(users);
 		}
 		else if (commandP == "help")
 		{

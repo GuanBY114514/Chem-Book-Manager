@@ -1,6 +1,5 @@
 #pragma once
 #include "stdc++.h"
-#include "UserBehaver.h"
 
 struct Book
 {
@@ -69,11 +68,33 @@ public:
 	{
 		borrowed_book_list.push_back({ book_name , time(0)});
 		borrowed_book++;
+		
 	}
 
-	void Return_book()
+	bool Return_Book(std::string book_name)
 	{
+		for (int i = 0; i < borrowed_book_list.size(); i++)
+		{
+			if (borrowed_book_list[i].name == book_name)
+			{
+				borrowed_book_list.erase(borrowed_book_list.begin() + i);
+				borrowed_book--;
+				return true;
+			}
+		}
+		std::cerr << "Î´ÕÒµ½¸ÃÊé\n";
+		return false;
+	}
 
+	bool Return_Book(int num)
+	{
+		if (num >= borrowed_book_list.size())
+		{
+			return false;
+		}
+		borrowed_book_list.erase(borrowed_book_list.begin() + num);
+		borrowed_book--;
+		return true;
 	}
 
 	std::string Get_Password() const
