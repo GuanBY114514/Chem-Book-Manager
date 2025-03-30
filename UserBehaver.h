@@ -1,12 +1,29 @@
 #pragma once
-#include<stdc++.h>
-#include"UserBehaver.h"
+#include "stdc++.h"
+#include "UserBehaver.h"
 
 struct Book
 {
 	std::string name;
-	time_t borrowed_book;
+	time_t borrowed_book_time;
 };
+
+struct Book_With_Person
+{
+	std::string name;
+	time_t borrowed_book_time;
+	std::string person;
+
+	Book_With_Person(Book book, std::string person)
+	{
+		this->name = book.name;
+		this->borrowed_book_time = book.borrowed_book_time;
+		this->person = person;
+	}
+};
+
+extern std::string time_to_str(time_t t);
+extern std::string generate_book_table(const std::vector<Book_With_Person>& books);
 
 
 class User
@@ -37,6 +54,10 @@ public:
 	User(Login_User_State _level)
 	{
 		this->level = _level;
+		this->borrowed_book = 0;
+		this->name = "";
+		this->password = "";
+		this->borrowed_book_list = {};
 	}
 
 	std::string Get_name()const
@@ -44,14 +65,9 @@ public:
 		return name;
 	}
 
-	void Borrow_book(std::string book_name,int max_b)
+	void Borrow_Book(std::string book_name)
 	{
-		if (borrowed_book >= max_b)
-		{
-			printf("你已经借了%d本书了，上限是%d本书，请先归还再借阅", borrowed_book, max_b);
-			return;
-		}
-		borrowed_book_list.push_back({ book_name ,borrowed_book });
+		borrowed_book_list.push_back({ book_name , time(0)});
 		borrowed_book++;
 	}
 
@@ -90,6 +106,11 @@ public:
 		return;
 	}
 
+	std::vector<Book> Get_Borrowed_Book_List() const
+	{
+		return borrowed_book_list;
+	}
+
 private:
 	std::string name;
 	std::vector<Book> borrowed_book_list;
@@ -100,5 +121,37 @@ private:
 
 class Administrator : public User
 {
+public:
 	Administrator() = default;
+	Administrator(std::string _name, std::string _password, int borr_num_of_book, std::vector<Book> _book_list, Login_User_State _level)
+		:User(_name, _password, borr_num_of_book, _book_list, _level)
+	{	}
+	Administrator(std::vector<Book> book_list_read, int borrowed_book_num, Login_User_State _level)
+		:User(book_list_read, borrowed_book_num, _level)
+	{	}
+	Administrator(Login_User_State _level)
+		:User(_level)
+	{	}
+
+	Administrator(const User& _user)
+		:User(_user)
+	{
+	}
+	~Administrator() = default;
+
+	void View_All_Borrowed_Book_In_Console(const std::vector<Book_With_Person> _borrowed_book_list)
+	{
+		for (int i = 0; i < _borrowed_book_list.size(); i++)
+		{
+			std::cout << _borrowed_book_list[i].name << " " << time_to_str(_borrowed_book_list[i].borrowed_book_time) <<" "<<_borrowed_book_list[i].person << std::endl;
+		}
+	}
+
+	void View_All_Borrowed_Book_In_HTML_Table(const std::vector<Book_With_Person> _borrowed_book_list)
+	{
+		std::string html = generate_book_table(_borrowed_book_list);
+		std::ofstream fout("borrowed_book.html");
+		fout << html;
+		fout.close();
+	}
 };

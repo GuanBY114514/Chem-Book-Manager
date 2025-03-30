@@ -1,41 +1,49 @@
-﻿#include<stdc++.h>
+﻿#include "stdc++.h"
+#include <windows.h>
+#include <io.h>
+#include <fcntl.h>
 
 enum Login_User_State
 {
 	Unlogined = -1,
 	Local_user,
-	Administrator
+	L_Administrator
 };
 
 #include"UserBehaver.h"
 #include"LoadFile.h"
 
-std::string command;
-std::string Logined_user;
-std::vector<User> users;
+std::string command;										 //当前命令
+std::string Logined_user;                                    //当前登录用户名
+std::vector<User> users;									 //用户列表
 User Logined_User;                                           //当前登录用户
 User Pre_Logined_User;                                       //预登录用户
 Login_User_State Current_State = Unlogined;                  //当前登录状态
 size_t Users_num;                                            //用户数量
-Logger log_manager;                                          //
+unsigned int num_of_list;                                    //当前用户在用户列表中的位置
+int max_borrowed;											 //最大借书数量
+Logger log_manager;                                          //日志记录器
 
 #include "interact.h"
 
 int main()
 {
 	//初始化
-	int max_borrowed;
+	
+
+	//加载用户信息
+
 	Load_Setting(max_borrowed);
 	Load_Users();
 	system("color f1");
-	std::cout << "\n\n**************************\n";
-	std::cout << "*欢迎使用化竞图书管理系统*\n";
-	std::cout << "**************************\n\n\n操作台:\n";
+	std::wcout << "\n\n**************************\n";
+	std::wcout << "*欢迎使用化竞图书管理系统*\n";
+	std::wcout << "**************************\n\n\n操作台:\n";
 
 	log_manager.log(Logger::Level::APP_INFO, "应用启动");
 
-	//Main Function
-	std::cout << ">>>";
+	//交互模块
+	std::wcout << ">>>";
 	while (std::getline(std::cin,command))
 	{
 		Interact(Current_State, command);
